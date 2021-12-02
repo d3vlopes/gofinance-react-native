@@ -9,7 +9,7 @@ type ButtonProps = {
 
 export function Button({ title, ...rest }: ButtonProps) {
   return (
-    <S.Container>
+    <S.Container {...rest}>
       <S.Title>{title}</S.Title>
     </S.Container>
   )
