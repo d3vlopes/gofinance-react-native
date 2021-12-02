@@ -2,13 +2,17 @@ import React from 'react'
 
 import * as S from './styles'
 
-type CategorySelectProps = {
+type CategorySelectButtonProps = {
   title: string
+  onPress: () => void
 }
 
-export function CategorySelect({ title }: CategorySelectProps) {
+export function CategorySelectButton({
+  title,
+  onPress,
+}: CategorySelectButtonProps) {
   return (
-    <S.Container>
+    <S.Container onPress={onPress}>
       <S.Category>{title}</S.Category>
       <S.Icon name="chevron-down" />
     </S.Container>
