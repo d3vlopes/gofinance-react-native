@@ -54,7 +54,7 @@ export function Register() {
             />
           </S.TransactionsTypesWrapper>
           <CategorySelectButton
-            title="Categoria"
+            title={category.name}
             onPress={handleOpenSelectCategoryModal}
           />
         </S.Fields>
