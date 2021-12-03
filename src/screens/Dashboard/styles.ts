@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components/native'
+import { BorderlessButton } from 'react-native-gesture-handler'
 import { FlatList, FlatListProps } from 'react-native'
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize'
 import {
@@ -72,6 +73,8 @@ export const UserName = styled.Text`
     font-family: ${theme.fonts.bold};
   `}
 `
+
+export const LogoutButton = styled(BorderlessButton)``
 
 export const Icon = styled(Feather)`
   ${({ theme }) => css`
