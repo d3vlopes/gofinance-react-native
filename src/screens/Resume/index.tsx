@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { ActivityIndicator } from 'react-native'
+import { useFocusEffect } from '@react-navigation/core'
 import { VictoryPie } from 'victory-native'
 import { RFValue } from 'react-native-responsive-fontsize'
 import { addMonths, subMonths, format } from 'date-fns'
@@ -28,6 +30,7 @@ type CategoryData = {
 }
 
 export function Resume() {
+  const [isLoading, setLoading] = useState(false)
   const [selectedDate, setSelectedDate] = useState(new Date())
   const [totalByCategories, setTotalByCategories] = useState<CategoryData[]>([])
 
@@ -44,6 +47,8 @@ export function Resume() {
   }
 
   async function loadData() {
+    setLoading(true)
+
     const dataKey = '@gofinances:transactions'
     const response = await AsyncStorage.getItem(dataKey)
     const responseFormatted = response ? JSON.parse(response) : []
@@ -90,11 +95,22 @@ export function Resume() {
     })
 
     setTotalByCategories(totalByCategory)
+    setLoading(false)
   }
 
-  useEffect(() => {
-    loadData()
-  }, [selectedDate])
+  useFocusEffect(
+    useCallback(() => {
+      loadData()
+    }, [selectedDate]),
+  )
+
+  const renderLoading = () => {
+    return (
+      <S.LoadingContainer>
+        <ActivityIndicator color={theme.colors.primary} size="large" />
+      </S.LoadingContainer>
+    )
+  }
 
   function renderHistoryCards(category: CategoryData) {
     return (
@@ -107,11 +123,8 @@ export function Resume() {
     )
   }
 
-  return (
-    <S.Container>
-      <S.Header>
-        <S.Title>Resumo</S.Title>
-      </S.Header>
+  const renderContent = () => {
+    return (
       <S.Content
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
@@ -156,6 +169,15 @@ export function Resume() {
         </S.ChartContainer>
         {totalByCategories.map(renderHistoryCards)}
       </S.Content>
+    )
+  }
+
+  return (
+    <S.Container>
+      <S.Header>
+        <S.Title>Resumo</S.Title>
+      </S.Header>
+      {isLoading ? renderLoading() : renderContent()}
     </S.Container>
   )
 }
