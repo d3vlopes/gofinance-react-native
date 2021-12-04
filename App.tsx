@@ -10,6 +10,8 @@ import {
   Poppins_700Bold,
 } from '@expo-google-fonts/poppins'
 
+import { AuthProvider } from './src/hooks/auth'
+
 import theme from './src/global/styles/theme'
 
 import { AppRoutes } from './src/routes/app.routes'
@@ -31,7 +33,9 @@ export default function App() {
       <NavigationContainer>
         <StatusBar barStyle="light-content" />
         {/* <AppRoutes /> */}
-        <SignIn />
+        <AuthProvider>
+          <SignIn />
+        </AuthProvider>
       </NavigationContainer>
     </ThemeProvider>
   )
