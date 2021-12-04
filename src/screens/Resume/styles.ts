@@ -32,3 +32,10 @@ export const Content = styled.ScrollView.attrs({
 })`
   ${({ theme }) => css``}
 `
+
+export const ChartContainer = styled.View`
+  ${({ theme }) => css`
+    width: 100%;
+    align-items: center;
+  `}
+`
