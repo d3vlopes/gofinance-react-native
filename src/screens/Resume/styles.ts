@@ -1,5 +1,7 @@
 import { RFValue } from 'react-native-responsive-fontsize'
 import styled, { css } from 'styled-components/native'
+import { BorderlessButton } from 'react-native-gesture-handler'
+import { Feather } from '@expo/vector-icons'
 
 export const Container = styled.View`
   ${({ theme }) => css`
@@ -27,9 +29,7 @@ export const Title = styled.Text`
   `}
 `
 
-export const Content = styled.ScrollView.attrs({
-  contentContainerStyle: { flex: 1, padding: 24 },
-})`
+export const Content = styled.ScrollView`
   ${({ theme }) => css``}
 `
 
@@ -37,5 +37,30 @@ export const ChartContainer = styled.View`
   ${({ theme }) => css`
     width: 100%;
     align-items: center;
+  `}
+`
+
+export const MouthSelect = styled.View`
+  ${({ theme }) => css`
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 24px;
+  `}
+`
+
+export const MouthSelectButton = styled(BorderlessButton)``
+
+export const MouthSelectIcon = styled(Feather)`
+  ${({ theme }) => css`
+    font-size: ${RFValue(24)}px;
+  `}
+`
+
+export const Mouth = styled.Text`
+  ${({ theme }) => css`
+    font-family: ${theme.fonts.regular};
+    font-size: ${RFValue(20)}px;
   `}
 `

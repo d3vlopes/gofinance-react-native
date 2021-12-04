@@ -2,6 +2,10 @@ import React, { useEffect, useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { VictoryPie } from 'victory-native'
 import { RFValue } from 'react-native-responsive-fontsize'
+import { addMonths, subMonths, format } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
+
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs'
 import { useTheme } from 'styled-components'
 
 import { HistoryCard } from '../../components/HistoryCard'
@@ -24,9 +28,20 @@ type CategoryData = {
 }
 
 export function Resume() {
+  const [selectedDate, setSelectedDate] = useState(new Date())
   const [totalByCategories, setTotalByCategories] = useState<CategoryData[]>([])
 
   const theme = useTheme()
+
+  function handleDateChange(action: 'next' | 'prev') {
+    if (action === 'next') {
+      const newDate = addMonths(selectedDate, 1)
+      setSelectedDate(newDate)
+    } else {
+      const newDate = subMonths(selectedDate, 1)
+      setSelectedDate(newDate)
+    }
+  }
 
   async function loadData() {
     const dataKey = '@gofinances:transactions'
@@ -34,7 +49,10 @@ export function Resume() {
     const responseFormatted = response ? JSON.parse(response) : []
 
     const expensives = responseFormatted.filter(
-      (expensive: TransactionData) => expensive.type === 'negative',
+      (expensive: TransactionData) =>
+        expensive.type === 'negative' &&
+        new Date(expensive.date).getMonth() === selectedDate.getMonth() &&
+        new Date(expensive.date).getFullYear() === selectedDate.getFullYear(),
     )
 
     const expensivesTotal = expensives.reduce(
@@ -76,7 +94,7 @@ export function Resume() {
 
   useEffect(() => {
     loadData()
-  }, [])
+  }, [selectedDate])
 
   function renderHistoryCards(category: CategoryData) {
     return (
@@ -94,7 +112,32 @@ export function Resume() {
       <S.Header>
         <S.Title>Resumo</S.Title>
       </S.Header>
-      <S.Content>
+      <S.Content
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{
+          paddingHorizontal: 24,
+          paddingBottom: useBottomTabBarHeight(),
+        }}
+      >
+        <S.MouthSelect>
+          <S.MouthSelectButton>
+            <S.MouthSelectIcon
+              name="chevron-left"
+              onPress={() => handleDateChange('prev')}
+            />
+          </S.MouthSelectButton>
+          <S.Mouth>
+            {format(selectedDate, 'MMMM, yyyy', {
+              locale: ptBR,
+            })}
+          </S.Mouth>
+          <S.MouthSelectButton>
+            <S.MouthSelectIcon
+              name="chevron-right"
+              onPress={() => handleDateChange('next')}
+            />
+          </S.MouthSelectButton>
+        </S.MouthSelect>
         <S.ChartContainer>
           <VictoryPie
             data={totalByCategories}
