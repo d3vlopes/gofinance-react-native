@@ -5,6 +5,7 @@ import { useFocusEffect } from '@react-navigation/native'
 import { useTheme } from 'styled-components'
 
 import { useAuth } from '../../hooks/auth'
+
 import { HightlightCard } from '../../components/HighlightCard'
 import {
   TransactionCard,
@@ -147,12 +148,12 @@ export function Dashboard() {
             <S.UserInfo>
               <S.Photo
                 source={{
-                  uri: 'https://avatars.githubusercontent.com/u/59663666?v=4',
+                  uri: user.photo,
                 }}
               />
               <S.User>
                 <S.UserGretting>Olá,</S.UserGretting>
-                <S.UserName>Leandro</S.UserName>
+                <S.UserName>{user.name}</S.UserName>
               </S.User>
             </S.UserInfo>
             <S.LogoutButton onPress={signOut}>
