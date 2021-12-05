@@ -12,12 +12,14 @@ import {
 
 import * as Yup from 'yup'
 
+import { useAuth } from '../../hooks/auth'
+
+import { CategorySelect } from '../CategorySelect'
+
 import { Button } from '../../components/Forms/Button'
 import { CategorySelectButton } from '../../components/Forms/CategorySelectButton'
 import { InputForm } from '../../components/Forms/InputForm'
 import { TransactionTypeButton } from '../../components/Forms/TransactionTypeButton'
-
-import { CategorySelect } from '../CategorySelect'
 
 import * as S from './styles'
 
@@ -42,6 +44,7 @@ export function Register() {
     name: 'Categoria',
   })
 
+  const { user } = useAuth()
   const { navigate }: NavigationProp<ParamListBase> = useNavigation()
 
   const {
@@ -84,7 +87,7 @@ export function Register() {
     }
 
     try {
-      const dataKey = '@gofinances:transactions'
+      const dataKey = `@gofinances:transactions_users:${user.id}`
 
       const data = await AsyncStorage.getItem(dataKey)
       const currentData = data ? JSON.parse(data) : []
