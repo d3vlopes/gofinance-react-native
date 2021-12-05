@@ -45,12 +45,20 @@ export function Dashboard() {
     collection: DataListProps[],
     type: 'positive' | 'negative',
   ) {
+    const collectionFilttered = collection.filter(
+      (transaction) => transaction.type === type,
+    )
+
+    if (collectionFilttered.length === 0) {
+      return 0
+    }
+
     const lastTransaction = new Date(
       Math.max.apply(
         Math,
-        collection
-          .filter((transaction) => transaction.type === type)
-          .map((transaction) => new Date(transaction.date).getTime()),
+        collectionFilttered.map((transaction) =>
+          new Date(transaction.date).getTime(),
+        ),
       ),
     )
 
@@ -63,7 +71,7 @@ export function Dashboard() {
   }
 
   async function laodTransactions() {
-    const dataKey = '@gofinances:transactions'
+    const dataKey = `@gofinances:transactions_users:${user.id}`
     const response = await AsyncStorage.getItem(dataKey)
     const transactions = response ? JSON.parse(response) : []
 
@@ -100,7 +108,10 @@ export function Dashboard() {
       transactions,
       'negative',
     )
-    const totalInterval = `01 a ${lastTransactionsExpensives}`
+    const totalInterval =
+      lastTransactionsExpensives === 0
+        ? 'Não há transações'
+        : `01 a ${lastTransactionsExpensives}`
 
     const total = entriesTotal - expensiveTotal
 
@@ -108,11 +119,17 @@ export function Dashboard() {
     setHighlightData({
       entries: {
         amount: formatAmount(entriesTotal),
-        lastTransaction: `Última entrada dia ${lastTransactionsEntries}`,
+        lastTransaction:
+          lastTransactionsEntries === 0
+            ? 'Não há transações'
+            : `Última entrada dia ${lastTransactionsEntries}`,
       },
       expensives: {
         amount: formatAmount(expensiveTotal),
-        lastTransaction: `Última saída dia ${lastTransactionsExpensives}`,
+        lastTransaction:
+          lastTransactionsExpensives === 0
+            ? 'Não há transações'
+            : `Última saída dia ${lastTransactionsExpensives}`,
       },
       total: {
         amount: formatAmount(total),
