@@ -10,6 +10,8 @@ import { ptBR } from 'date-fns/locale'
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs'
 import { useTheme } from 'styled-components'
 
+import { useAuth } from '../../hooks/auth'
+
 import { HistoryCard } from '../../components/HistoryCard'
 import { TransactionCardProps } from '../../components/TransactionCard'
 
@@ -35,6 +37,7 @@ export function Resume() {
   const [totalByCategories, setTotalByCategories] = useState<CategoryData[]>([])
 
   const theme = useTheme()
+  const { user } = useAuth()
 
   function handleDateChange(action: 'next' | 'prev') {
     if (action === 'next') {
@@ -49,7 +52,7 @@ export function Resume() {
   async function loadData() {
     setLoading(true)
 
-    const dataKey = '@gofinances:transactions'
+    const dataKey = `@gofinances:transactions_users:${user.id}`
     const response = await AsyncStorage.getItem(dataKey)
     const responseFormatted = response ? JSON.parse(response) : []
 
