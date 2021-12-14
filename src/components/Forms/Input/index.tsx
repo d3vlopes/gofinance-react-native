@@ -3,8 +3,10 @@ import { TextInputProps } from 'react-native'
 
 import * as S from './styles'
 
-type InputProps = TextInputProps
+type InputProps = {
+  active?: boolean
+} & TextInputProps
 
-export function Input({ ...rest }: InputProps) {
-  return <S.Container {...rest} />
+export function Input({ active = false, ...rest }: InputProps) {
+  return <S.Container active={active} {...rest} />
 }
