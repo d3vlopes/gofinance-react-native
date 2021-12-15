@@ -1,9 +1,20 @@
 {
+  "name": "gofinances",
+  "displayName": "GoFinances",
   "expo": {
     "name": "gofinances",
+    "icon": "./resources/icon.png",
     "slug": "gofinances",
     "scheme": "gofinances",
     "version": "1.0.0",
+    "ios": {
+      "bundleIdentifier": "com.gofinance",
+      "buildNumber": "1.0.0"
+    },
+    "android": {
+      "package": "com.gofinance",
+      "versionCode": 1
+    },
     "assetBundlePatterns": [
       "**/*"
     ],
@@ -11,6 +22,5 @@
       "config": "metro.config.js" , 
       "sourceExts" : [ "js", "jsx", "ts", "tsx" , "svg"]     
     }
-  },
-  "name": "gofinances"
+  }
 }
