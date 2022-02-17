@@ -15,7 +15,7 @@
 
 # Sobre
 
-Aplicativo de controle financeiro, criando durante o treinamento Ignite da [Rocketseat](https://www.rocketseat.com.br/).
+Aplicativo de controle financeiro, criado durante o treinamento Ignite da [Rocketseat](https://www.rocketseat.com.br/).
 ## Features
 
 - Autenticação social
